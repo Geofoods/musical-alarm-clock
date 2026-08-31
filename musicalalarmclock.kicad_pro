@@ -526,7 +526,7 @@
       "netlist": "",
       "plot": "",
       "specctra_dsn": "",
-      "step": "",
+      "step": "musicalalarmclock.step",
       "vrml": ""
     },
     "page_layout_descr_file": ""
@@ -661,7 +661,7 @@
         "uuid": "7bc89f7e-50e5-4ac1-b6d7-82ea5c9c93ae"
       }
     ],
-    "used_designators": "U1,H1-4,SW1-4,J1,BZ1,#PWR1-8",
+    "used_designators": "U1,SW1-4,H1-4,BZ1,J1,#PWR1-8",
     "variants": []
   },
   "sheets": [
