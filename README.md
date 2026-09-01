@@ -29,7 +29,7 @@ An alarm clock with a Seeed Studio XIAO ESP32, a TFT display, and a piezo buzzer
 | 1 | 2.25-inch TFT Screen |
 | 4 | MX-Style Switches |
 | 4 | White DSA keycaps |
-| 1 | 3.3V Piezo Buzzer |
+| 1 | 3.3V Piezo Passive Buzzer |
 | 4 | M3x16mm screws |
 | 4 | M3x5x4mm heatset inserts |
 | 1 | 2.54mm 8 Pin Male Header |
