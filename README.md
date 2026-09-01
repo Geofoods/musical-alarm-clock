@@ -2,6 +2,7 @@
 
 <img width="806" height="506" alt="Screenshot 2026-08-31 104627" src="https://github.com/user-attachments/assets/ba8a66c0-d181-4d6c-b390-5980b764ce9a" />
 <img width="1099" height="688" alt="Screenshot 2026-08-29 193110" src="https://github.com/user-attachments/assets/a555799d-b64a-4888-b2d6-d261aeddd37b" />
+<img width="1206" height="675" alt="Screenshot 2026-08-31 210344" src="https://github.com/user-attachments/assets/737202dc-1434-4366-91b7-3ccd98f0867e" />
 
 
 An alarm clock with a Seeed Studio XIAO ESP32, a TFT display, and a piezo buzzer. The project includes firmware, a custom PCB, and a 3D-printed enclosure.
