@@ -5,7 +5,18 @@
 #include <gfxfont.h>
 #include <Adafruit_ST7789.h>
 #include <SPI.h>
+#if __has_include(<esp_random.h>)
 #include <esp_random.h>
+#define HW_RANDOM() esp_random()
+#elif __has_include(<esp_system.h>)
+#include <esp_system.h>
+#define HW_RANDOM() esp_random()
+#elif __has_include(<rng.h>)
+#include <rng.h>
+#define HW_RANDOM() rng_u32()
+#else
+#define HW_RANDOM() (micros())
+#endif
 #include "pitches.h"
 
 
@@ -172,9 +183,9 @@ struct Song {
 
 const Song songs[] = {
   { melodyNeverGonnaGiveYouUp, durationsNeverGonnaGiveYouUp, sizeof(melodyNeverGonnaGiveYouUp) / sizeof(melodyNeverGonnaGiveYouUp[0]) },
-  { melodyStillDre, durationsStillDre, sizeof(melodyStillDre) / sizeof(melodyStillDre[0]) },
+  { melodyIceIceBaby, durationsIceIceBaby, sizeof(melodyIceIceBaby) / sizeof(melodyIceIceBaby[0]) },
   { melodyLivingOnAPrayer, durationsLivingOnAPrayer, sizeof(melodyLivingOnAPrayer) / sizeof(melodyLivingOnAPrayer[0]) },
-  { melodyIceIceBaby, durationsIceIceBaby, sizeof(melodyIceIceBaby) / sizeof(melodyIceIceBaby[0]) }
+  { melodyStillDre, durationsStillDre, sizeof(melodyStillDre) / sizeof(melodyStillDre[0]) }
 };
 
 const int NUM_SONGS = sizeof(songs) / sizeof(songs[0]);
@@ -437,7 +448,7 @@ void checkButtons() {
 
 void setup() {
   Serial.begin(115200);
-  randomSeed(esp_random());
+  randomSeed(HW_RANDOM());
 
   pinMode(SW1, INPUT_PULLUP);
   pinMode(SW2, INPUT_PULLUP);
