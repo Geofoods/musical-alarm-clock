@@ -1,6 +1,7 @@
 # Musical Alarm Clock
 
-<img width="806" height="506" alt="Screenshot 2026-08-31 104627" src="https://github.com/user-attachments/assets/ba8a66c0-d181-4d6c-b390-5980b764ce9a" />
+<img width="946" height="664" alt="Screenshot 2026-09-01 171144" src="https://github.com/user-attachments/assets/a7da6143-fa8b-4d4a-a2b9-284d6f1f9721" />
+<img width="1042" height="560" alt="Screenshot 2026-09-01 171151" src="https://github.com/user-attachments/assets/f10fd5a5-898f-4a99-95cf-372d79285727" />
 <img width="1099" height="688" alt="Screenshot 2026-08-29 193110" src="https://github.com/user-attachments/assets/a555799d-b64a-4888-b2d6-d261aeddd37b" />
 <img width="1206" height="675" alt="Screenshot 2026-08-31 210344" src="https://github.com/user-attachments/assets/737202dc-1434-4366-91b7-3ccd98f0867e" />
 <img width="1369" height="729" alt="Screenshot 2026-08-29 193120" src="https://github.com/user-attachments/assets/51073519-81cc-4ad9-b7be-152db96f200b" />
