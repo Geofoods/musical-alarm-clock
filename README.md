@@ -16,6 +16,7 @@ Designed by **George Sun**.
 - 4-button interface for setting the alarm hour/minute
 - Configurable alarm time with a simple state-machine UI
 - Compact 90mm × 48.5mm PCB form factor
+- Plays a unique melody for the alarm
 
 ## BOM
 
