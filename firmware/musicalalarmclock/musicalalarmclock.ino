@@ -3,10 +3,11 @@
 #include <Adafruit_SPITFT.h>
 #include <Adafruit_SPITFT_Macros.h>
 #include <gfxfont.h>
-#include <Adafruit_ST7789.h> // driver for the ST7789 screen
+#include <Adafruit_ST7789.h>
 #include <SPI.h>
+#include "pitches.h"
 
-// Defining pins for the display
+
 #define TFT_SCLK 9
 #define TFT_MOSI 10
 #define TFT_RST 8
@@ -21,7 +22,68 @@
 
 #define BUZZER 20
 
-// Fix setColRowStart() by exposing it via a subclass
+
+const int melody[] = {
+  NOTE_A4, REST, NOTE_B4, REST, NOTE_C5, REST, NOTE_A4, REST,
+  NOTE_D5, REST, NOTE_E5, REST, NOTE_D5, REST,
+
+  NOTE_G4, NOTE_A4, NOTE_C5, NOTE_A4, NOTE_E5, NOTE_E5, REST,
+  NOTE_D5, REST,
+
+  NOTE_G4, NOTE_A4, NOTE_C5, NOTE_A4, NOTE_D5, NOTE_D5, REST,
+  NOTE_C5, REST, NOTE_B4, NOTE_A4, REST,
+
+  NOTE_G4, NOTE_A4, NOTE_C5, NOTE_A4, NOTE_C5, NOTE_D5, REST,
+  NOTE_B4, NOTE_A4, NOTE_G4, REST, NOTE_G4, REST, NOTE_D5, REST, NOTE_C5, REST,
+
+  NOTE_G4, NOTE_A4, NOTE_C5, NOTE_A4, NOTE_E5, NOTE_E5, REST,
+  NOTE_D5, REST,
+
+  NOTE_G4, NOTE_A4, NOTE_C5, NOTE_A4, NOTE_G5, NOTE_B4, REST,
+  NOTE_C5, REST, NOTE_B4, NOTE_A4, REST,
+
+  NOTE_G4, NOTE_A4, NOTE_C5, NOTE_A4, NOTE_C5, NOTE_D5, REST,
+  NOTE_B4, NOTE_A4, NOTE_G4, REST, NOTE_G4, REST, NOTE_D5, REST, NOTE_C5, REST,
+
+  NOTE_C5, REST, NOTE_D5, REST, NOTE_G4, REST, NOTE_D5, REST, NOTE_E5, REST,
+  NOTE_G5, NOTE_F5, NOTE_E5, REST,
+
+  NOTE_C5, REST, NOTE_D5, REST, NOTE_G4, REST
+};
+
+const int durations[] = {
+  8, 8, 8, 8, 8, 8, 8, 4,
+  8, 8, 8, 8, 2, 2,
+
+  8, 8, 8, 8, 2, 8, 8,
+  2, 8,
+
+  8, 8, 8, 8, 2, 8, 8,
+  4, 8, 8, 8, 8,
+
+  8, 8, 8, 8, 2, 8, 8,
+  2, 8, 4, 8, 8, 8, 8, 8, 1, 4,
+
+  8, 8, 8, 8, 2, 8, 8,
+  2, 8,
+
+  8, 8, 8, 8, 2, 8, 8,
+  2, 8, 8, 8, 8,
+
+  8, 8, 8, 8, 2, 8, 8,
+  4, 8, 3, 8, 8, 8, 8, 8, 1, 4,
+
+  2, 6, 2, 6, 4, 4, 2, 6, 2, 3,
+  8, 8, 8, 8,
+
+  2, 6, 2, 6, 2, 1
+};
+
+const int MELODY_LENGTH = sizeof(melody) / sizeof(melody[0]);
+int melodyIndex = 0;
+unsigned long noteStartTime = 0;
+
+
 class MyST7789 : public Adafruit_ST7789 {
 public:
   MyST7789(int8_t cs, int8_t dc, int8_t mosi, int8_t sclk, int8_t rst)
@@ -42,7 +104,7 @@ int seconds = 0;
 int alarmHour = 12;
 int alarmMinute = 0;
 
-// Alarm editing state machine: 0 = Normal Clock, 1 = Set Alarm Hours, 2 = Set Alarm Minutes
+
 uint8_t alarmEditState = 0;
 
 bool alarmRinging = false;
@@ -74,7 +136,6 @@ void drawTime() {
     tft.setTextSize(6);
     tft.setCursor(20, 65);
 
-    // Highlight active edit parameter with cyan, leave inactive white
     if (alarmEditState == 1) tft.setTextColor(ST77XX_CYAN);
     else tft.setTextColor(ST77XX_WHITE);
 
@@ -163,16 +224,48 @@ void updateClock() {
   }
 }
 
+void playAlarmMelody() {
+  if (melodyIndex >= MELODY_LENGTH) {
+    noTone(BUZZER);
+    return;
+  }
+
+  int note = melody[melodyIndex];
+  int noteDuration = 1000 / durations[melodyIndex];
+  unsigned long now = millis();
+
+  if (now - noteStartTime >= noteDuration) {
+    noteStartTime = now;
+    if (note != REST) {
+      tone(BUZZER, note, noteDuration);
+    } else {
+      noTone(BUZZER);
+    }
+    melodyIndex++;
+  }
+}
+
+void startAlarm() {
+  alarmRinging = true;
+  alarmTriggeredThisMinute = true;
+  melodyIndex = 0;
+  noteStartTime = 0;
+  drawTime();
+}
+
+void stopAlarm() {
+  alarmRinging = false;
+  noTone(BUZZER);
+  drawTime();
+}
+
 void checkAlarm() {
   if (alarmEditState > 0 || alarmRinging) {
     return;
   }
 
   if (hours == alarmHour && minutes == alarmMinute && !alarmTriggeredThisMinute) {
-    alarmRinging = true;
-    alarmTriggeredThisMinute = true;
-    digitalWrite(BUZZER, HIGH);
-    drawTime();
+    startAlarm();
   }
 }
 
@@ -188,35 +281,35 @@ void checkButtons() {
     return;
   }
 
-  // SW1: DECREMENT CURRENT PARAMETER
+
   if (lastSW1 == HIGH && sw1 == LOW) {
     lastButtonTime = now;
-    if (alarmEditState == 1) { // Decrement Hour
+    if (alarmEditState == 1) {
       alarmHour = (alarmHour - 1 + 24) % 24;
       drawTime();
       drawAlarmInfo();
-    } else if (alarmEditState == 2) { // Decrement Minute
+    } else if (alarmEditState == 2) {
       alarmMinute = (alarmMinute - 1 + 60) % 60;
       drawTime();
       drawAlarmInfo();
     }
   }
 
-  // SW2: INCREMENT CURRENT PARAMETER
+
   if (lastSW2 == HIGH && sw2 == LOW) {
     lastButtonTime = now;
-    if (alarmEditState == 1) { // Increment Hour
+    if (alarmEditState == 1) {
       alarmHour = (alarmHour + 1) % 24;
       drawTime();
       drawAlarmInfo();
-    } else if (alarmEditState == 2) { // Increment Minute
+    } else if (alarmEditState == 2) {
       alarmMinute = (alarmMinute + 1) % 60;
       drawTime();
       drawAlarmInfo();
     }
   }
 
-  // SW3: TOGGLE EDIT MODE (Off -> Hour -> Minute -> Off)
+
   if (lastSW3 == HIGH && sw3 == LOW) {
     lastButtonTime = now;
     if (!alarmRinging) {
@@ -225,16 +318,14 @@ void checkButtons() {
     }
   }
 
-  // SW4: CANCEL / CONFIRM / STOP ALARM
+
   if (lastSW4 == HIGH && sw4 == LOW) {
     lastButtonTime = now;
     if (alarmEditState > 0) {
-      alarmEditState = 0; // Exit edit mode
+      alarmEditState = 0;
       drawTime();
     } else if (alarmRinging) {
-      alarmRinging = false; // Silence alarm
-      digitalWrite(BUZZER, LOW);
-      drawTime();
+      stopAlarm();
     }
   }
 
@@ -273,6 +364,10 @@ void loop() {
   updateClock();
   checkButtons();
   checkAlarm();
+
+  if (alarmRinging) {
+    playAlarmMelody();
+  }
 
   static unsigned long lastDisplayUpdate = 0;
   if (millis() - lastDisplayUpdate >= 500) {

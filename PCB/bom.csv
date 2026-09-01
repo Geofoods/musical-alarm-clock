@@ -1,0 +1,12 @@
+Reference,Value,Footprint,Quantity,Description
+U1,XIAO-ESP32-C3,Seeed_Studio_XIAO_Series:XIAO-ESP32-C3-DIP,1,Seeed Studio XIAO ESP32-C3 microcontroller
+J1,Conn_01x08_Pin,Connector_PinSocket_2.54mm:PinSocket_1x08_P2.54mm_Vertical,1,1x8 2.54mm header (display connector)
+BZ1,Buzzer,Buzzer_Beeper:Buzzer_12x9.5RM7.6,1,Piezo buzzer 12x9.5mm RM7.6
+SW1,SW_Push,Button_Switch_Keyboard:SW_Cherry_MX_1.00u_PCB,1,Push button (decrement)
+SW2,SW_Push,Button_Switch_Keyboard:SW_Cherry_MX_1.00u_PCB,1,Push button (increment)
+SW3,SW_Push,Button_Switch_Keyboard:SW_Cherry_MX_1.00u_PCB,1,Push button (mode)
+SW4,SW_Push,Button_Switch_Keyboard:SW_Cherry_MX_1.00u_PCB,1,Push button (cancel/confirm)
+H1,MountingHole,MountingHole:MountingHole_3.2mm_M3,1,Mounting hole M3
+H2,MountingHole,MountingHole:MountingHole_3.2mm_M3,1,Mounting hole M3
+H3,MountingHole,MountingHole:MountingHole_3.2mm_M3,1,Mounting hole M3
+H4,MountingHole,MountingHole:MountingHole_3.2mm_M3,1,Mounting hole M3
