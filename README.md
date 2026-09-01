@@ -4,7 +4,7 @@
 <img width="1099" height="688" alt="Screenshot 2026-08-29 193110" src="https://github.com/user-attachments/assets/a555799d-b64a-4888-b2d6-d261aeddd37b" />
 
 
-An alarm clock with a Seeed Studio XIAO ESP32-C3, an ST7789 TFT display, and a piezo buzzer. The project includes firmware, a custom PCB, and a 3D-printed enclosure.
+An alarm clock with a Seeed Studio XIAO ESP32, a TFT display, and a piezo buzzer. The project includes firmware, a custom PCB, and a 3D-printed enclosure.
 
 Designed by **George Sun**.
 
