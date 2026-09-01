@@ -1,10 +1,10 @@
-Item #,Quantity Required,Component Description
+Item #,Quantity,Component
 1,1,Custom PCB
-2,1,3d Printed Case (Top + Bottom)
-3,1,Seeed XIAO ESP32C3
+2,1,3D Printed Case
+3,1,Seeed XIAO ESP32
 4,1,2.25inch TFT Screen
 5,4,MX-Style Switches
-6,4,White blank DSA keycaps
+6,4,White DSA keycaps
 7,9,3.3V Piezo Buzzer
 8,4,M3x16mm screws
 9,4,M3x5mx4mm heatset inserts
