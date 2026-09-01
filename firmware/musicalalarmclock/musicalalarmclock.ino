@@ -5,6 +5,7 @@
 #include <gfxfont.h>
 #include <Adafruit_ST7789.h>
 #include <SPI.h>
+#include <esp_random.h>
 #include "pitches.h"
 
 
@@ -23,7 +24,7 @@
 #define BUZZER 20
 
 
-const int melody[] = {
+const int melodyNeverGonnaGiveYouUp[] = {
   NOTE_A4, REST, NOTE_B4, REST, NOTE_C5, REST, NOTE_A4, REST,
   NOTE_D5, REST, NOTE_E5, REST, NOTE_D5, REST,
 
@@ -51,7 +52,7 @@ const int melody[] = {
   NOTE_C5, REST, NOTE_D5, REST, NOTE_G4, REST
 };
 
-const int durations[] = {
+const int durationsNeverGonnaGiveYouUp[] = {
   8, 8, 8, 8, 8, 8, 8, 4,
   8, 8, 8, 8, 2, 2,
 
@@ -79,7 +80,105 @@ const int durations[] = {
   2, 6, 2, 6, 2, 1
 };
 
-const int MELODY_LENGTH = sizeof(melody) / sizeof(melody[0]);
+const int melodyStillDre[] = {
+  NOTE_D3, REST, NOTE_D3, REST, NOTE_D3, REST, NOTE_D3, NOTE_D3, NOTE_D3, NOTE_A2, REST,
+  NOTE_D3, REST, NOTE_D3, REST, NOTE_D3, REST, NOTE_D3, NOTE_D3, NOTE_D3, NOTE_A2, REST,
+  NOTE_D3, REST, NOTE_D3, REST, NOTE_D3, REST, NOTE_D3, NOTE_D3, NOTE_D3, NOTE_A2, REST,
+  NOTE_D3,
+  NOTE_D4, REST, NOTE_D4, NOTE_D4, REST,
+  NOTE_E3, NOTE_D3, NOTE_F3, REST, NOTE_F3,
+  NOTE_D4, REST, NOTE_D4, NOTE_D4, REST,
+  NOTE_D3,
+  NOTE_D4, REST, NOTE_D4, NOTE_D4, REST,
+  NOTE_E3, NOTE_D3, NOTE_F3, REST, NOTE_F3,
+  NOTE_D4,
+  REST
+};
+
+const int durationsStillDre[] = {
+  8, 16, 8, 16, 8, 16, 10, 10, 10, 3, 2,
+  8, 16, 8, 16, 8, 16, 10, 10, 10, 3, 2,
+  8, 16, 8, 16, 8, 16, 10, 10, 10, 3, 2,
+  4,
+  4, 3, 4, 4, 3,
+  6, 6, 6, 33, 6,
+  4, 3, 4, 4, 3,
+  4,
+  4, 3, 4, 4, 3,
+  6, 6, 6, 33, 6,
+  3,
+  1
+};
+
+const int melodyLivingOnAPrayer[] = {
+  NOTE_B3, NOTE_D4, NOTE_E4, NOTE_E4,
+  NOTE_B3, NOTE_D4, NOTE_E4, NOTE_E4,
+  NOTE_B3, NOTE_D4, NOTE_E4, NOTE_E4,
+
+  NOTE_B3, NOTE_D4, NOTE_G4, NOTE_G4, NOTE_G4, NOTE_FS4, NOTE_E4, NOTE_D4, NOTE_E4, NOTE_E4, NOTE_D4,
+  NOTE_B3,
+
+  NOTE_G4, NOTE_G4, NOTE_FS4, NOTE_E4, NOTE_E4, NOTE_FS4,
+  NOTE_G4, NOTE_FS4, NOTE_E4, NOTE_E4, NOTE_B3,
+  NOTE_A3, NOTE_G3,
+
+  REST
+};
+
+const int durationsLivingOnAPrayer[] = {
+  8, 8, 8, 8,
+  8, 8, 8, 8,
+  8, 8, 8, 8,
+
+  8, 8, 8, 8, 8, 8, 8, 8, 8, 16, 16,
+  1,
+
+  8, 8, 8, 8, 4, 8,
+  4, 4, 8, 4, 4,
+  8, 1,
+
+  1
+};
+
+const int melodyIceIceBaby[] = {
+  NOTE_A5, NOTE_A5, NOTE_A5, NOTE_A5, NOTE_A5, NOTE_A5, NOTE_A5, NOTE_A5, NOTE_A5, NOTE_A5, NOTE_A5,
+  NOTE_G5, NOTE_G5, NOTE_G5, NOTE_G5, NOTE_G5,
+  NOTE_A5, NOTE_A5, NOTE_A5, NOTE_A5, NOTE_A5, NOTE_A5, NOTE_A5, NOTE_A5, NOTE_A5, NOTE_A5, NOTE_A5,
+  NOTE_G5, NOTE_G5, NOTE_G5, NOTE_G5, NOTE_G5,
+
+  NOTE_A5, NOTE_A5,
+  NOTE_G5, NOTE_G5,
+  NOTE_A5, NOTE_A5,
+  NOTE_G5, NOTE_G5
+};
+
+const int durationsIceIceBaby[] = {
+  5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+  5, 5, 5, 5, 5,
+  5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+  5, 5, 5, 5, 5,
+
+  1, 2,
+  1, 2,
+  1, 2,
+  1, 2
+};
+
+struct Song {
+  const int* notes;
+  const int* durations;
+  int length;
+};
+
+const Song songs[] = {
+  { melodyNeverGonnaGiveYouUp, durationsNeverGonnaGiveYouUp, sizeof(melodyNeverGonnaGiveYouUp) / sizeof(melodyNeverGonnaGiveYouUp[0]) },
+  { melodyStillDre, durationsStillDre, sizeof(melodyStillDre) / sizeof(melodyStillDre[0]) },
+  { melodyLivingOnAPrayer, durationsLivingOnAPrayer, sizeof(melodyLivingOnAPrayer) / sizeof(melodyLivingOnAPrayer[0]) },
+  { melodyIceIceBaby, durationsIceIceBaby, sizeof(melodyIceIceBaby) / sizeof(melodyIceIceBaby[0]) }
+};
+
+const int NUM_SONGS = sizeof(songs) / sizeof(songs[0]);
+int songIndex = 0;
 int melodyIndex = 0;
 unsigned long noteStartTime = 0;
 
@@ -225,13 +324,13 @@ void updateClock() {
 }
 
 void playAlarmMelody() {
-  if (melodyIndex >= MELODY_LENGTH) {
+  if (melodyIndex >= songs[songIndex].length) {
     noTone(BUZZER);
     return;
   }
 
-  int note = melody[melodyIndex];
-  int noteDuration = 1000 / durations[melodyIndex];
+  int note = songs[songIndex].notes[melodyIndex];
+  int noteDuration = 1000 / songs[songIndex].durations[melodyIndex];
   unsigned long now = millis();
 
   if (now - noteStartTime >= noteDuration) {
@@ -246,6 +345,7 @@ void playAlarmMelody() {
 }
 
 void startAlarm() {
+  songIndex = random(NUM_SONGS);
   alarmRinging = true;
   alarmTriggeredThisMinute = true;
   melodyIndex = 0;
@@ -337,6 +437,7 @@ void checkButtons() {
 
 void setup() {
   Serial.begin(115200);
+  randomSeed(esp_random());
 
   pinMode(SW1, INPUT_PULLUP);
   pinMode(SW2, INPUT_PULLUP);
