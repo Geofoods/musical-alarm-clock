@@ -18,18 +18,16 @@ Designed by **George Sun**.
 
 ## BOM
 
-+----------+---------------------------------+
-| Quantity | Component                       |
-+----------+---------------------------------+
-| 1        | Custom PCB                      |
-| 1        | 3D Printed Case                 |
-| 1        | Seeed XIAO ESP32                |
-| 1        | 2.25-inch TFT Screen            |
-| 4        | MX-Style Switches               |
-| 4        | White DSA keycaps               |
-| 1        | 3.3V Piezo Buzzer               |
-| 4        | M3x16mm screws                  |
-| 4        | M3x5x4mm heatset inserts        |
-| 1        | 2.54mm 8 Pin Male Header        |
-| 8        | 20cm Female-Female Jumper Wires |
-+----------+---------------------------------+
+| Quantity | Component |
+| --- | --- |
+| 1 | Custom PCB |
+| 1 | 3D Printed Case |
+| 1 | Seeed XIAO ESP32 |
+| 1 | 2.25-inch TFT Screen |
+| 4 | MX-Style Switches |
+| 4 | White DSA keycaps |
+| 1 | 3.3V Piezo Buzzer |
+| 4 | M3x16mm screws |
+| 4 | M3x5x4mm heatset inserts |
+| 1 | 2.54mm 8 Pin Male Header |
+| 8 | 20cm Female-Female Jumper Wires |
