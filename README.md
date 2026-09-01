@@ -21,6 +21,8 @@ An alarm clock with a Seeed Studio XIAO ESP32, a TFT display, and a piezo buzzer
 
 ## BOM
 
+I know the kit comes with an active buzzer which only plays sounds at one frequency so I have my own passive buzzer which can play more different frequencies meaning I can play melodies
+
 | Quantity | Component |
 | --- | --- |
 | 1 | Custom PCB |
