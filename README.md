@@ -33,3 +33,7 @@ An alarm clock with a Seeed Studio XIAO ESP32, a TFT display, and a piezo buzzer
 | 4 | M3x5x4mm heatset inserts |
 | 1 | 2.54mm 8 Pin Male Header |
 | 8 | 20cm Female-Female Jumper Wires |
+
+
+
+Got the music from this [buzzer repository](https://github.com/hibit-dev/buzzer)
