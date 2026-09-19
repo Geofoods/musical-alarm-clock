@@ -524,7 +524,7 @@
     "last_paths": {
       "idf": "",
       "netlist": "",
-      "plot": "",
+      "plot": "musicalalarmclock",
       "specctra_dsn": "",
       "step": "musicalalarmclock.step",
       "vrml": ""
